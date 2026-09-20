@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Soham's Birthday - Quest QR Portal</title>
+    <!-- QRCode.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --bg-grad: radial-gradient(circle at center, #1e0b36 0%, #0a0414 100%);
+            --card-bg: rgba(30, 16, 60, 0.95);
+            --gold: #ffd700;
+            --cyan-glow: #00f5d4;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg-grad); color: #ffffff;
+            min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 20px; text-align: center;
+        }
+
+        h1 { color: var(--gold); font-size: 1.8rem; margin-bottom: 6px; }
+        p.subtitle { color: var(--cyan-glow); font-size: 0.95rem; margin-bottom: 25px; }
+
+        .qr-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px; width: 100%; max-width: 900px;
+        }
+
+        .qr-card {
+            background: var(--card-bg); border: 2px solid var(--gold);
+            border-radius: 20px; padding: 20px; display: flex; flex-direction: column;
+            align-items: center; box-shadow: 0 0 25px rgba(157, 78, 221, 0.4);
+        }
+
+        .qr-card h2 { color: var(--gold); font-size: 1.2rem; margin-bottom: 8px; }
+        .qr-card p { font-size: 0.85rem; color: #d1c4e9; margin-bottom: 15px; }
+
+        .qr-box {
+            background: #ffffff; padding: 12px; border-radius: 12px;
+            display: inline-block; margin-bottom: 12px;
+        }
+
+        .passcode-pill {
+            background: rgba(255, 215, 0, 0.15); border: 1px dashed var(--gold);
+            color: var(--gold); font-weight: bold; padding: 6px 14px;
+            border-radius: 20px; font-size: 0.85rem; margin-top: 5px;
+        }
+
+        .launch-btn {
+            background: linear-gradient(135deg, #ffd700, #d4af37);
+            color: #0d061a; font-weight: bold; border: none;
+            padding: 10px 18px; border-radius: 25px; text-decoration: none;
+            font-size: 0.85rem; margin-top: 10px; display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Soham’s Birthday Party Quests</h1>
+    <p class="subtitle">Scan a QR Code on your smartphone to start the challenge!</p>
+
+    <div class="qr-grid">
+        <!-- QUEST 1 CARD -->
+        <div class="qr-card">
+            <h2>Quest 1: Apprentice Spark</h2>
+            <p>10 Mixed Trivia Questions + Whimsical Chimes</p>
+            <div id="qrcode-q1" class="qr-box"></div>
+            <div class="passcode-pill">Unlocks Code: SPELLBOOK42</div>
+            <a href="quest1.html" target="_blank" class="launch-btn">Open Quest 1 🔗</a>
+        </div>
+
+        <!-- QUEST 2 CARD -->
+        <div class="qr-card">
+            <h2>Quest 2: Nostalgia Realm</h2>
+            <p>Requires Code: SPELLBOOK42</p>
+            <div id="qrcode-q2" class="qr-box"></div>
+            <div class="passcode-pill">Unlocks Code: CRYSTAL77</div>
+            <a href="quest2.html" target="_blank" class="launch-btn">Open Quest 2 🔗</a>
+        </div>
+
+        <!-- QUEST 3 CARD -->
+        <div class="qr-card">
+            <h2>Quest 3: Google AR Finale</h2>
+            <p>Requires Code: CRYSTAL77</p>
+            <div id="qrcode-q3" class="qr-box"></div>
+            <div class="passcode-pill">Reward: Google 3D AR Animals</div>
+            <a href="quest3.html" target="_blank" class="launch-btn">Open Quest 3 🔗</a>
+        </div>
+    </div>
+
+    <script>
+        const baseURL = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
+
+        new QRCode(document.getElementById("qrcode-q1"), {
+            text: baseURL + "/quest1.html", width: 160, height: 160
+        });
+        new QRCode(document.getElementById("qrcode-q2"), {
+            text: baseURL + "/quest2.html", width: 160, height: 160
+        });
+        new QRCode(document.getElementById("qrcode-q3"), {
+            text: baseURL + "/quest3.html", width: 160, height: 160
+        });
+    </script>
+</body>
+</html>
