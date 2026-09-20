@@ -56,6 +56,7 @@
             color: #0d061a; font-weight: bold; border: none;
             padding: 10px 18px; border-radius: 25px; text-decoration: none;
             font-size: 0.85rem; margin-top: 10px; display: inline-block;
+            touch-action: manipulation;
         }
     </style>
 </head>
@@ -85,15 +86,16 @@
 
         <!-- QUEST 3 CARD -->
         <div class="qr-card">
-            <h2>Quest 3: Google AR Finale</h2>
+            <h2>Quest 3: Native AR Finale</h2>
             <p>Requires Code: CRYSTAL77</p>
             <div id="qrcode-q3" class="qr-box"></div>
-            <div class="passcode-pill">Reward: Google 3D AR Animals</div>
+            <div class="passcode-pill">Reward: Direct 3D AR Animal Summoning</div>
             <a href="quest3.html" target="_blank" class="launch-btn">Open Quest 3 🔗</a>
         </div>
     </div>
 
     <script>
+        // Dynamically compute the base directory path for QR code generation
         const baseURL = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
 
         new QRCode(document.getElementById("qrcode-q1"), {
