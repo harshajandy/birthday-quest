@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Soham's Birthday - Quest 1: Apprentice Spark</title>
+    <title>Soham's Birthday - Quest 2: Nostalgia Realm</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg-grad: radial-gradient(circle at center, #2e1065 0%, #0f0728 100%);
-            --card-bg: rgba(30, 16, 60, 0.95);
+            --bg-grad: radial-gradient(circle at center, #003554 0%, #001219 100%);
+            --card-bg: rgba(10, 30, 45, 0.95);
             --gold: #ffd700;
-            --accent-glow: #e879f9;
+            --cyan-glow: #00f5d4;
             --correct: #2ecc71;
             --wrong: #e74c3c;
             --kid-accent: #ff007f;
@@ -35,8 +35,8 @@
         .game-card {
             position: relative; z-index: 10;
             width: 100%; max-width: 500px; background: var(--card-bg);
-            border: 2px solid var(--accent-glow); border-radius: 24px; padding: 25px;
-            text-align: center; box-shadow: 0 0 35px rgba(232, 121, 249, 0.4);
+            border: 2px solid var(--cyan-glow); border-radius: 24px; padding: 25px;
+            text-align: center; box-shadow: 0 0 35px rgba(0, 245, 212, 0.4);
         }
 
         h1 { color: var(--gold); font-size: 1.5rem; margin-bottom: 6px; }
@@ -50,8 +50,8 @@
         .badge-adult { background: var(--adult-accent); color: white; }
 
         .btn {
-            background: linear-gradient(135deg, #c084fc, #7e22ce);
-            color: white; border: 1px solid var(--gold); padding: 14px 24px;
+            background: linear-gradient(135deg, #00f5d4, #0077b6);
+            color: #001219; border: 1px solid var(--gold); padding: 14px 24px;
             font-size: 1rem; font-weight: bold; border-radius: 50px;
             cursor: pointer; width: 100%; margin-top: 12px; touch-action: manipulation;
         }
@@ -64,7 +64,7 @@
 
         .options-grid { display: grid; gap: 10px; margin-top: 12px; }
         .option-btn {
-            background: rgba(58, 28, 110, 0.8); border: 1.5px solid #a855f7;
+            background: rgba(15, 45, 65, 0.8); border: 1.5px solid #00b4d8;
             color: white; padding: 14px; border-radius: 12px; text-align: left;
             font-size: 0.95rem; cursor: pointer; transition: all 0.2s; touch-action: manipulation;
         }
@@ -93,40 +93,44 @@
 <body>
 
     <canvas id="particle-canvas"></canvas>
-    <button class="audio-toggle" onclick="toggleMusic()">🔊 Melody 1: ON</button>
+    <button class="audio-toggle" onclick="toggleMusic()">🔊 Melody 2: ON</button>
 
     <div class="game-card">
-        <!-- START SCREEN -->
-        <div id="start-screen">
+        <!-- PASSCODE GATEWAY -->
+        <div id="gate-screen">
             <h1>Soham’s Birthday Party</h1>
-            <p style="color: var(--accent-glow); font-weight: bold; margin-bottom: 10px;">Quest 1: The Apprentice's Spark</p>
-            <p style="font-size: 0.9rem; margin-bottom: 20px; color: #e9d5ff; line-height: 1.4;">
-                Parents & Kids team up for 10 trivia questions! Use free hints if you get stuck to reveal the passcode for Quest 2.
+            <p style="color: var(--cyan-glow); font-weight: bold; margin-bottom: 10px;">Quest 2: The Nostalgia Realm</p>
+            <p style="font-size: 0.9rem; margin-bottom: 15px; color: #caf0f8;">
+                Enter the Spellbook Key Code unlocked from Quest 1:
             </p>
-            <button class="btn" onclick="startQuest()">Begin Quest 1 🪄</button>
+            <input type="text" id="passcode" placeholder="SPELLBOOK42" 
+                   autocapitalize="off" autocorrect="off" spellcheck="false"
+                   style="padding: 12px; border-radius: 10px; border: 1px solid var(--gold); width: 80%; text-align: center; font-size: 1.1rem; text-transform: uppercase;">
+            <p id="error-msg" style="color: var(--wrong); font-size: 0.85rem; margin-top: 8px;" class="hidden">Incorrect Spellbook Code!</p>
+            <button class="btn" onclick="verifyGate()">Unlock Quest 2 🪄</button>
         </div>
 
         <!-- QUIZ ENGINE -->
         <div id="quiz-screen" class="hidden">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span id="q-num" style="color: #e9d5ff; font-size: 0.85rem;">Question 1 of 10</span>
+                <span id="q-num" style="color: #caf0f8; font-size: 0.85rem;">Question 1 of 10</span>
                 <span id="q-tag" class="badge badge-kid">Kid Question</span>
             </div>
             <h3 id="q-text" style="min-height: 55px; margin-top: 10px; font-size: 1.05rem; line-height: 1.3;">Question...</h3>
             <div id="options-container" class="options-grid"></div>
-            
+
             <button class="btn-hint" onclick="showHint()">Need a Hint? 💡</button>
             <p id="hint-text" style="color: var(--gold); font-size: 0.85rem; margin-top: 8px; font-style: italic;" class="hidden"></p>
         </div>
 
         <!-- CLEAR SCREEN -->
         <div id="end-screen" class="hidden">
-            <h1>✨ Quest 1 Cleared! ✨</h1>
-            <p style="color: var(--accent-glow); font-weight: bold; margin-top: 5px;">Score: <span id="final-score">0</span> / 10</p>
+            <h1>✨ Quest 2 Cleared! ✨</h1>
+            <p style="color: var(--cyan-glow); font-weight: bold; margin-top: 5px;">Score: <span id="final-score">0</span> / 10</p>
             <div class="code-box">
-                <p style="font-size: 0.85rem;">Your Spellbook Key for Quest 2:</p>
-                <div class="passcode-display">SPELLBOOK42</div>
-                <p style="font-size: 0.8rem; opacity: 0.9;">Scan the Quest 2 QR Code and enter this code!</p>
+                <p style="font-size: 0.85rem;">Your Portal Crystal Code for Quest 3:</p>
+                <div class="passcode-display">CRYSTAL77</div>
+                <p style="font-size: 0.8rem; opacity: 0.9;">Scan the Quest 3 QR Code to unlock the AR Finale!</p>
             </div>
         </div>
     </div>
@@ -151,34 +155,43 @@
             musicPlaying = !musicPlaying;
             const btn = document.querySelector('.audio-toggle');
             if (musicPlaying) {
-                btn.innerText = "🔊 Melody 1: ON";
-                startQuest1Melody();
+                btn.innerText = "🔊 Melody 2: ON";
+                startQuest2Melody();
             } else {
-                btn.innerText = "🔇 Melody 1: OFF";
-                clearInterval(musicInterval);
+                btn.innerText = "🔇 Melody 2: OFF";
+                if (musicInterval) clearInterval(musicInterval);
             }
         }
 
-        const q1Chords = [
-            [261.63, 329.63, 392.00, 523.25],
-            [220.00, 261.63, 329.63, 440.00],
-            [174.61, 220.00, 261.63, 349.23],
-            [196.00, 246.94, 293.66, 392.00]
+        const q2Chords = [
+            [293.66, 349.23, 440.00],
+            [196.00, 246.94, 349.23],
+            [261.63, 329.63, 392.00],
+            [220.00, 261.63, 329.63]
         ];
 
-        function startQuest1Melody() {
+        function playKick() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.frequency.setValueAtTime(110, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.12);
+        }
+
+        function startQuest2Melody() {
             if (musicInterval) clearInterval(musicInterval);
             let idx = 0;
             musicInterval = setInterval(() => {
                 if (!musicPlaying) return;
-                const chord = q1Chords[idx % q1Chords.length];
-                chord.forEach((freq, noteIdx) => {
-                    setTimeout(() => {
-                        playTone(freq, 'sine', 0.8, 0.03);
-                    }, noteIdx * 100);
-                });
+                playKick();
+                const chord = q2Chords[idx % q2Chords.length];
+                chord.forEach(freq => playTone(freq, 'square', 0.22, 0.03));
                 idx++;
-            }, 1500);
+            }, 380);
         }
 
         function playTone(freq, type, duration, vol = 0.08) {
@@ -194,16 +207,16 @@
         }
 
         const rawQuestions = [
-            { type: "kid", question: "In Disney's Tangled, what magical object gives Rapunzel's long hair its healing powers?", options: ["A Golden Flower", "A Magic Mirror", "A Spellbook", "A Crystal Ring"], answer: 0, hint: "It grew from a drop of pure sunlight!" },
-            { type: "kid", question: "What is the name of Rapunzel's loyal pet chameleon in Disney's Tangled?", options: ["Sven", "Pascal", "Maximus", "Flounder"], answer: 1, hint: "He changes colors to hide with Rapunzel!" },
-            { type: "kid", question: "What is the name of the magical school Harry Potter attends?", options: ["Narnia", "Hogwarts", "Neverland", "Camelot"], answer: 1, hint: "It has four famous houses including Gryffindor." },
-            { type: "kid", question: "In Harry Potter, what position does Harry play on his house Quidditch team?", options: ["Keeper", "Seeker", "Chaser", "Beater"], answer: 1, hint: "His job is to catch the tiny Golden Snitch!" },
-            { type: "kid", question: "What classic magic phrase do magicians say to make things appear?", options: ["Open Sesame", "Bibbidi-Bobbidi-Boo", "Abracadabra", "Hocus Pocus"], answer: 2, hint: "Starts with an 'A' and ends with 'Dabra'." },
-            { type: "adult", question: "In Disney's Tangled, what household cooking item does Rapunzel use as her defense weapon?", options: ["Rolling Pin", "Frying Pan", "Soup Ladle", "Whisk"], answer: 1, hint: "Cast iron and great for knocking out Flynn Rider!" },
-            { type: "adult", question: "In Harry Potter, what secret train platform at King's Cross Station leads to the Hogwarts Express?", options: ["Platform 9 3/4", "Platform 7 1/2", "Platform 10", "Platform 5"], answer: 0, hint: "You have to run straight through a solid brick wall!" },
-            { type: "adult", question: "In the 1990 film 'Home Alone', where was Kevin's family traveling to?", options: ["London", "Paris", "Tokyo", "Rome"], answer: 1, hint: "The capital city of France!" },
-            { type: "adult", question: "Which iconic 90s handheld digital pet required constant feeding and care?", options: ["Game Boy", "Furby", "Tamagotchi", "Pokedex"], answer: 2, hint: "It lived on a small keychain." },
-            { type: "adult", question: "In Star Wars, what color is Luke Skywalker's lightsaber in Return of the Jedi?", options: ["Blue", "Red", "Green", "Purple"], answer: 2, hint: "Same color as Master Yoda's weapon!" }
+            { type: "kid", question: "In Disney's Tangled, what do Rapunzel and Flynn Rider watch float into the night sky on her birthday?", options: ["Fireworks", "Golden Lanterns", "Hot Air Balloons", "Shooting Stars"], answer: 1, hint: "I see the light at last!" },
+            { type: "kid", question: "In Harry Potter, what sweet treat jumps around and comes with a collectible wizard card?", options: ["Bertie Bott's Beans", "Chocolate Frogs", "Treacle Tart", "Sugar Quills"], answer: 1, hint: "Watch out before it hops out the train window!" },
+            { type: "kid", question: "In Disney's Frozen, what is the name of Elsa and Anna's kingdom?", options: ["Arendelle", "Corona", "Atlantis", "Encanto"], answer: 0, hint: "Starts with the letter 'A'." },
+            { type: "kid", question: "What Pokemon is known for carrying a green bulb on its back?", options: ["Squirtle", "Charmander", "Bulbasaur", "Pikachu"], answer: 2, hint: "Bulb + Dinosaur!" },
+            { type: "kid", question: "What magic animal has a horse body and a single spiral horn?", options: ["Griffin", "Unicorn", "Dragon", "Pegasus"], answer: 1, hint: "Often seen with rainbow manes!" },
+            { type: "adult", question: "In Disney's Tangled, what kingdom is Rapunzel secretly the lost princess of?", options: ["Arendelle", "Corona", "Aldovia", "Genovia"], answer: 1, hint: "Named after the Latin word for crown!" },
+            { type: "adult", question: "In Harry Potter, what is the name of the magical alley where wizards buy wands and books?", options: ["Diagon Alley", "Knockturn Alley", "Privet Drive", "Hogsmeade"], answer: 0, hint: "You tap the brick wall behind the Leaky Cauldron." },
+            { type: "adult", question: "Which 80s fantasy film features David Bowie as Jareth the Goblin King?", options: ["The Dark Crystal", "Labyrinth", "Willow", "Legend"], answer: 1, hint: "Jennifer Connelly navigates a maze to rescue her baby brother." },
+            { type: "adult", question: "What retro video game hardware famously required users to 'blow into the cartridge'?", options: ["Sega Genesis", "NES", "Atari 2600", "PlayStation"], answer: 1, hint: "Nintendo's original 8-bit gray toaster console!" },
+            { type: "adult", question: "In Marvel lore, which Infinity Stone allows Doctor Strange to control time?", options: ["Space Stone", "Mind Stone", "Time Stone", "Power Stone"], answer: 2, hint: "Housed inside the Eye of Agamotto." }
         ];
 
         let questions = [];
@@ -218,13 +231,20 @@
             return array;
         }
 
-        function startQuest() {
+        function verifyGate() {
             initAudio();
-            startQuest1Melody();
-            questions = shuffle([...rawQuestions]);
-            document.getElementById('start-screen').classList.add('hidden');
-            document.getElementById('quiz-screen').classList.remove('hidden');
-            loadQ();
+            const input = document.getElementById('passcode').value.trim().toUpperCase();
+            if (input === "SPELLBOOK42" || input === "DEBUG") {
+                startQuest2Melody();
+                playTone(600, 'sine', 0.25);
+                questions = shuffle([...rawQuestions]);
+                document.getElementById('gate-screen').classList.add('hidden');
+                document.getElementById('quiz-screen').classList.remove('hidden');
+                loadQ();
+            } else {
+                playTone(180, 'sawtooth', 0.35);
+                document.getElementById('error-msg').classList.remove('hidden');
+            }
         }
 
         function loadQ() {
@@ -232,9 +252,9 @@
             document.getElementById('q-num').innerText = `Question ${qIdx + 1} of ${questions.length}`;
             document.getElementById('q-text').innerText = q.question;
             document.getElementById('hint-text').classList.add('hidden');
-            
+
             const tagEl = document.getElementById('q-tag');
-            tagEl.innerText = q.type === "kid" ? "Kid Question 🧒" : "Parent Question 👨‍gsub";
+            tagEl.innerText = q.type === "kid" ? "Kid Question 🧒" : "Parent Question 👨‍👩‍👧";
             tagEl.className = q.type === "kid" ? "badge badge-kid" : "badge badge-adult";
 
             const container = document.getElementById('options-container');
@@ -289,14 +309,14 @@
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         const particles = Array.from({ length: 35 }, () => ({
             x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-            radius: Math.random() * 2.5 + 0.5, alpha: Math.random(), speedY: Math.random() * -0.5 - 0.2
+            radius: Math.random() * 2 + 0.5, alpha: Math.random(), speedY: Math.random() * -0.5 - 0.2
         }));
         function animParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => {
                 p.y += p.speedY; if (p.y < 0) p.y = canvas.height;
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(232, 121, 249, ${p.alpha})`; ctx.fill();
+                ctx.fillStyle = `rgba(0, 245, 212, ${p.alpha})`; ctx.fill();
             });
             requestAnimationFrame(animParticles);
         }

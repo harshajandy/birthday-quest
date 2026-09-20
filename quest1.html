@@ -100,8 +100,11 @@
         <div id="start-screen">
             <h1>Soham’s Birthday Party</h1>
             <p style="color: var(--accent-glow); font-weight: bold; margin-bottom: 10px;">Quest 1: The Apprentice's Spark</p>
-            <p style="font-size: 0.9rem; margin-bottom: 20px; color: #e9d5ff; line-height: 1.4;">
+            <p style="font-size: 0.9rem; margin-bottom: 15px; color: #e9d5ff; line-height: 1.4;">
                 Parents & Kids team up for 10 trivia questions! Use free hints if you get stuck to reveal the passcode for Quest 2.
+            </p>
+            <p style="font-size: 0.75rem; color: var(--gold); margin-bottom: 15px;">
+                💡 <i>iPhone users: Flip side switch off Silent mode to hear music!</i>
             </p>
             <button class="btn" onclick="startQuest()">Begin Quest 1 🪄</button>
         </div>
@@ -155,7 +158,7 @@
                 startQuest1Melody();
             } else {
                 btn.innerText = "🔇 Melody 1: OFF";
-                clearInterval(musicInterval);
+                if (musicInterval) clearInterval(musicInterval);
             }
         }
 
@@ -234,7 +237,7 @@
             document.getElementById('hint-text').classList.add('hidden');
             
             const tagEl = document.getElementById('q-tag');
-            tagEl.innerText = q.type === "kid" ? "Kid Question 🧒" : "Parent Question 👨‍gsub";
+            tagEl.innerText = q.type === "kid" ? "Kid Question 🧒" : "Parent Question 👨‍👩‍👧";
             tagEl.className = q.type === "kid" ? "badge badge-kid" : "badge badge-adult";
 
             const container = document.getElementById('options-container');

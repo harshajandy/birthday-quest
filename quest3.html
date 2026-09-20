@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Soham's Birthday - Quest 3: Google AR Animals Finale</title>
+    <title>Soham's Birthday - Quest 3: Native AR Finale</title>
+    <!-- WebAR Model Viewer Library -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -21,8 +23,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: var(--bg-grad);
-            color: #ffffff; min-height: 100vh;
+            background: var(--bg-grad); color: #ffffff; min-height: 100vh;
             display: flex; justify-content: center; align-items: center; padding: 15px;
             overflow-x: hidden; position: relative;
         }
@@ -57,16 +58,14 @@
             display: inline-block; text-decoration: none; touch-action: manipulation;
         }
 
-        .btn-google-ar {
+        .btn-ar-launch {
             background: linear-gradient(135deg, #ff007f, #7b2cbf);
             color: white; border: 1.5px solid var(--gold);
-            padding: 14px 18px; font-size: 0.95rem; font-weight: bold;
+            padding: 12px 16px; font-size: 0.85rem; font-weight: bold;
             border-radius: 50px; cursor: pointer; width: 100%; margin-top: 8px;
             display: inline-block; text-decoration: none; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
-            touch-action: manipulation; transition: transform 0.2s;
+            touch-action: manipulation;
         }
-
-        .btn-google-ar:active { transform: scale(0.96); }
 
         .btn-hint {
             background: rgba(255, 215, 0, 0.15); border: 1px dashed var(--gold);
@@ -95,6 +94,11 @@
         .certificate-box {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             color: #110826; padding: 18px; border-radius: 16px; margin-top: 15px;
+        }
+
+        model-viewer {
+            width: 100%; height: 250px; background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 16px; margin-top: 15px; border: 1.5px solid var(--gold);
         }
 
         .google-animals-grid {
@@ -136,35 +140,45 @@
             <p id="hint-text" style="color: var(--gold); font-size: 0.85rem; margin-top: 8px; font-style: italic;" class="hidden"></p>
         </div>
 
-        <!-- GOOGLE AR ANIMALS VICTORY FINALE -->
+        <!-- NATIVE HOSTED 3D AR ANIMALS FINALE -->
         <div id="end-screen" class="hidden">
             <h1>🎉 Quests Completed! 🎉</h1>
             <p style="color: var(--emerald-glow); font-weight: bold;">Soham's Family Quest Champions</p>
 
             <div class="certificate-box">
-                <h2 style="font-size: 1.2rem; text-transform: uppercase;">✨ Grand Wizard Champions ✨</h2>
-                <p style="font-size: 1rem; font-weight: bold; margin-top: 4px;">Final Score: <span id="final-score">0</span> / 10</p>
-                <p style="font-size: 0.85rem; margin-top: 6px;">You unlocked Google's Magic 3D AR Animals!</p>
+                <h2 style="font-size: 1.1rem; text-transform: uppercase;">✨ Grand Wizard Champions ✨</h2>
+                <p style="font-size: 0.95rem; font-weight: bold; margin-top: 4px;">Final Score: <span id="final-score">0</span> / 10</p>
+                <p style="font-size: 0.85rem; margin-top: 6px; font-weight: bold;" id="selected-animal-title">Summoning Magic Creature...</p>
             </div>
 
-            <!-- GOOGLE NATIVE AR ANIMALS PORTAL -->
-            <div style="margin-top: 18px; background: rgba(255, 255, 255, 0.08); padding: 18px; border-radius: 20px; border: 1.5px solid var(--gold);">
-                <p style="font-size: 1rem; font-weight: bold; color: var(--gold);">🐾 Summon Google Life-Sized 3D Animals:</p>
-                <p style="font-size: 0.8rem; color: #d8f3dc; margin-top: 4px; line-height: 1.4;">
-                    Tap any animal below to launch Google's camera AR and bring a life-sized creature into your room!
-                </p>
+            <!-- DIRECT IN-PAGE 3D MODEL VIEWER -->
+            <model-viewer 
+                id="main-ar-viewer"
+                src="./Tiger.glb"
+                autoplay
+                ar 
+                ar-modes="webxr scene-viewer quick-look" 
+                camera-controls 
+                shadow-intensity="1.2"
+                alt="3D Animated Animal">
+                <button slot="ar-button" class="btn" style="position: absolute; bottom: 10px; left: 10%; width: 80%; font-size: 0.9rem;">
+                    Launch AR in Your Room 📸
+                </button>
+            </model-viewer>
+
+            <!-- MANUAL ANIMAL SELECTOR -->
+            <div style="margin-top: 15px; background: rgba(255, 255, 255, 0.08); padding: 15px; border-radius: 18px; border: 1px solid var(--gold);">
+                <p style="font-size: 0.85rem; font-weight: bold; color: var(--gold);">🐾 Switch 3D Animal Companion:</p>
                 
                 <div class="google-animals-grid">
-                    <a href="https://www.google.com/search?q=Tiger" target="_blank" class="btn-google-ar">🐅 3D Tiger</a>
-                    <a href="https://www.google.com/search?q=Giant+Panda" target="_blank" class="btn-google-ar">🐼 3D Panda</a>
-                    <a href="https://www.google.com/search?q=Great+White+Shark" target="_blank" class="btn-google-ar">🦈 3D Shark</a>
-                    <a href="https://www.google.com/search?q=Lion" target="_blank" class="btn-google-ar">🦁 3D Lion</a>
-                    <a href="https://www.google.com/search?q=Emperor+Penguin" target="_blank" class="btn-google-ar">🐧 3D Penguin</a>
-                    <a href="https://www.google.com/search?q=French+Bulldog" target="_blank" class="btn-google-ar">🐶 3D Frenchie</a>
+                    <button onclick="loadAnimal(0)" class="btn-ar-launch">🐅 Tiger</button>
+                    <button onclick="loadAnimal(1)" class="btn-ar-launch">🐆 Cheetah</button>
+                    <button onclick="loadAnimal(2)" class="btn-ar-launch">🐧 Penguin</button>
+                    <button onclick="loadAnimal(3)" class="btn-ar-launch">🦅 Eagle</button>
                 </div>
             </div>
 
-            <button class="btn" style="margin-top: 20px;" onclick="location.reload()">Play Again 🔄</button>
+            <button class="btn" style="margin-top: 18px;" onclick="location.reload()">Play Again 🔄</button>
         </div>
     </div>
 
@@ -172,6 +186,13 @@
         let audioCtx;
         let musicPlaying = true;
         let musicInterval;
+
+        const hostedAnimals = [
+            { name: "Bengal Tiger", file: "./Tiger.glb" },
+            { name: "Speed Cheetah", file: "./Cheetah.glb" },
+            { name: "Emperor Penguin", file: "./Emperor_Penguin.glb" },
+            { name: "Golden Eagle", file: "./Golden Eagle.glb" }
+        ];
 
         function initAudio() {
             if (!audioCtx) {
@@ -192,7 +213,7 @@
                 startQuest3Melody();
             } else {
                 btn.innerText = "🔇 Melody 3: OFF";
-                clearInterval(musicInterval);
+                if (musicInterval) clearInterval(musicInterval);
             }
         }
 
@@ -320,10 +341,19 @@
             }, 1200);
         }
 
+        function loadAnimal(index) {
+            const chosen = hostedAnimals[index];
+            document.getElementById('selected-animal-title').innerText = `✨ You Summoned: 3D ${chosen.name}!`;
+            document.getElementById('main-ar-viewer').src = chosen.file;
+        }
+
         function showEnd() {
             document.getElementById('quiz-screen').classList.add('hidden');
             document.getElementById('end-screen').classList.remove('hidden');
             document.getElementById('final-score').innerText = score;
+
+            const randIdx = Math.floor(Math.random() * hostedAnimals.length);
+            loadAnimal(randIdx);
 
             const duration = 3 * 1000;
             const end = Date.now() + duration;
